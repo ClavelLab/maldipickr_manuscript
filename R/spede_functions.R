@@ -1,6 +1,6 @@
 get_spede <- function(){
-  fs::dir_create(here::here("data"))
-  destfile <- here::here("data", "SPeDE.zip")
+  fs::dir_create(here::here("ext-code"))
+  destfile <- here::here("ext-code", "SPeDE.zip")
   curl::curl_download(
     url = "https://github.com/LM-UGent/SPeDE/archive/refs/heads/master.zip",
     destfile = destfile
@@ -9,8 +9,8 @@ get_spede <- function(){
 }
 
 extract_spede <- function(path_to_zip){
-  zip::unzip(path_to_zip, exdir = here::here("data"))
-  here::here("data", "SPeDE-master")
+  zip::unzip(path_to_zip, exdir = here::here("ext-code"))
+  here::here("ext-code", "SPeDE-master")
 }
 
 spede_peak <- function(spede_dir, spectra_dir, peak_dir_name) {
