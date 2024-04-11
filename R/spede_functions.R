@@ -1,3 +1,5 @@
+require(MassSpecWavelet) # as {renv} was not detecting R code from SPeDE
+
 get_spede <- function(){
   fs::dir_create(here::here("ext-code"))
   destfile <- here::here("ext-code", "SPeDE.zip")
