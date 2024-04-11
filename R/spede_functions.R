@@ -14,8 +14,9 @@ extract_spede <- function(path_to_zip){
 }
 
 spede_peak <- function(spede_dir, spectra_dir, peak_dir_name) {
+  check_data_directory()
   callr::rscript(
-    script = here::here(x, "data_preprocessing/peak_calling/peak_calling_cwt.R"),
+    script = here::here(spede_dir, "data_preprocessing/peak_calling/peak_calling_cwt.R"),
     cmdargs = c(
       here::here(spectra_dir), "."
     )
