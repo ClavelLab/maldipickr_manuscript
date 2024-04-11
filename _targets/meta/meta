@@ -1,0 +1,6 @@
+name|type|data|command|depend|seed|path|time|size|bytes|format|repository|iteration|parent|children|seconds|warnings|error
+.Random.seed|object|36640095cb981543|||||||||||||||
+extract_archive|function|293044a864caf1ec|||||||||||||||
+get_spede|function|5e9e99d03b408edf|||||||||||||||
+spede_archive|stem|4aa714fc77437a59|1636cceed41f550e|ed8ceda8427f66d2|262811837|/home/cpauvert/projects/iSOMiC/MALDI/dereplication/sandbox/maldipickr-and-spede/data/SPeDE.zip|t19824.5771072596s|6acfa950db7b6438|4056729|file|local|vector|||1.125||
+spede_code|stem|f274a7d3de07d798|2c2b6f475a08920e|e7db65bab5df9128|1437280181||t19824.5796270395s|e92536e5890953e5|126|qs|local|vector|||0.08||
