@@ -18,11 +18,16 @@ tar_source()
 list(
   tar_target(
     spede_archive,
-    get_spede(),
-    format = "file"
+    get_spede(), format = "file"
   ),
   tar_target(
     spede_code,
-    extract_archive(spede_archive)
+    extract_spede(spede_archive), format = "file"
+  ),
+  tar_target(
+    spede_peaks,
+    spede_peak(
+      spede_code, here::here("foo"), "spede_peaks"),
+    format = "file"
   )
 )
