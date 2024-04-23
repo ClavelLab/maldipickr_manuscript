@@ -32,3 +32,19 @@ spede_peak <- function(spede_dir, spectra_dir, peak_dir_name) {
   file.rename(here::here("PKL4DICE"), here::here("data", peak_dir_name))
   here::here("data", peak_dir_name)
 }
+
+
+spede_regrid <- function(spede_dir, spectra_dir, regrid_dir_name) {
+  check_data_directory()
+  if (dir.exists(here::here("data", regrid_dir_name))){
+    unlink(here::here("data", regrid_dir_name), recursive = TRUE)
+  } else {
+    dir.create(here::here("data", regrid_dir_name))
+  }
+  cmd <- paste(
+    "python3", here::here(spede_dir,"data_preprocessing/regridding/ReGrid.py"),
+    spectra_dir, here::here("data", regrid_dir_name)
+  )
+  system(cmd)
+  here::here("data", regrid_dir_name)
+}

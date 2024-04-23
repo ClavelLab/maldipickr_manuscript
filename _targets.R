@@ -29,5 +29,11 @@ list(
     spede_peak(
       spede_code, here::here("foo"), "spede_peaks"),
     format = "file"
+  ),
+  tar_target(
+    spede_regrids,
+    spede_regrid(
+      spede_code, here::here("foo"), "spede_regrid"),
+    format = "file"
   )
 )
