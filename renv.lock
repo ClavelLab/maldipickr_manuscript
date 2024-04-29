@@ -16,9 +16,9 @@
     "Version": "3.18"
   },
   "Python": {
-    "Version": "3.8.10",
+    "Version": "3.9.13",
     "Type": "virtualenv",
-    "Name": "./renv/python/virtualenvs/renv-python-3.8"
+    "Name": "./renv/python/virtualenvs/renv-python-3.9"
   },
   "Packages": {
     "BiocManager": {
