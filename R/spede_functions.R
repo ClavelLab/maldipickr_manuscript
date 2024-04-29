@@ -66,7 +66,7 @@ run_spede <- function(spede_dir, peak_dir, regrid_dir, spede_outdir, local_thres
     "python3",
     here::here(spede_dir, "Spectrum_Processing/SPeDE.py"),
     "-n", basename(spede_outdir),
-    "-l", local_threshold, spede_outdir, "."
+    "-l", local_threshold, spede_outdir, spede_outdir
   )
   print(cmd)
   system(cmd)
