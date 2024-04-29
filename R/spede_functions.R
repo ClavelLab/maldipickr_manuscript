@@ -48,3 +48,34 @@ spede_regrid <- function(spede_dir, spectra_dir, regrid_dir_name) {
   system(cmd)
   here::here("data", regrid_dir_name)
 }
+
+
+run_spede <- function(spede_dir, peak_dir, regrid_dir, spede_outdir, local_threshold = 50) {
+  if (!dir.exists(spede_outdir)) dir.create(spede_outdir)
+  pk <- list.files(peak_dir, full.names = T)
+  rg <- list.files(regrid_dir, full.names = T)
+  file.copy(
+    pk, # from
+    file.path(spede_outdir, basename(pk)) # to
+  )
+  file.copy(
+    rg, # from
+    file.path(spede_outdir, basename(rg)) # to
+  )
+  cmd <- paste(
+    "python3",
+    here::here(spede_dir, "Spectrum_Processing/SPeDE.py"),
+    "-n", basename(spede_outdir),
+    "-l", local_threshold, spede_outdir, "."
+  )
+  print(cmd)
+  system(cmd)
+  # dte <- gsub("-", "_", Sys.Date())
+  fles <- list.files(pattern = ".csv")
+  output_spede <- fles[grepl(spede_outdir, fles)]
+  file.rename(
+    output_spede,
+    file.path(spede_outdir, output_spede)
+  )
+  return(file.path(spede_outdir, output_spede))
+}

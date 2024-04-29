@@ -35,5 +35,10 @@ list(
     spede_regrid(
       spede_code, here::here("foo"), "spede_regrid"),
     format = "file"
+  ),
+  tar_target(
+    spede,
+    run_spede(spede_code, spede_peaks, spede_regrids, here::here("data", "SPeDE_50")),
+    format = "file"
   )
 )
