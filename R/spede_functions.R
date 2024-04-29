@@ -39,17 +39,20 @@ spede_peak <- function(spede_dir, spectra_dir, peak_dir_name) {
 
 spede_regrid <- function(spede_dir, spectra_dir, regrid_dir_name) {
   check_data_directory()
-  if (dir.exists(here::here("data", regrid_dir_name))){
-    unlink(here::here("data", regrid_dir_name), recursive = TRUE)
+  if (fs::dir_exists(here::here("data", regrid_dir_name))){
+    fs::dir_delete(here::here("data", regrid_dir_name))
   } else {
-    dir.create(here::here("data", regrid_dir_name))
+    fs::dir_create(here::here("data", regrid_dir_name))
   }
   cmd <- paste(
     "python3", here::here(spede_dir,"data_preprocessing/regridding/ReGrid.py"),
     spectra_dir, here::here("data", regrid_dir_name)
   )
   system(cmd)
-  here::here("data", regrid_dir_name)
+  fs::dir_ls(
+    path = here::here("data", regrid_dir_name),
+    glob = "*ReGrid_*.tab"
+  )
 }
 
 
