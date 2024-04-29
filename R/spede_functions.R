@@ -17,11 +17,11 @@ extract_spede <- function(path_to_zip){
 
 spede_peak <- function(spede_dir, spectra_dir, peak_dir_name) {
   check_data_directory()
-  if (dir.exists(here::here("data", peak_dir_name))){
-    unlink(here::here("data", peak_dir_name), recursive = TRUE)
+  if (fs::dir_exists(here::here("data", peak_dir_name))){
+    fs::dir_delete(here::here("data", peak_dir_name))
   }
-  if (dir.exists("PKL4DICE")){
-    unlink("PKL4DICE", recursive = TRUE)
+  if (fs::dir_exists("PKL4DICE")){
+    fs::dir_delete("PKL4DICE")
   }
   callr::rscript(
     script = here::here(spede_dir, "data_preprocessing/peak_calling/peak_calling_cwt.R"),
@@ -29,8 +29,11 @@ spede_peak <- function(spede_dir, spectra_dir, peak_dir_name) {
       here::here(spectra_dir), "."
     )
   )
-  file.rename(here::here("PKL4DICE"), here::here("data", peak_dir_name))
-  here::here("data", peak_dir_name)
+  fs::file_move(here::here("PKL4DICE"), here::here("data", peak_dir_name))
+  fs::dir_ls(
+    path = here::here("data", peak_dir_name),
+    glob = "*PKL_*.tab"
+  )
 }
 
 
