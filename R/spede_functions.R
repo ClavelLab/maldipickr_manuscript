@@ -56,17 +56,19 @@ spede_regrid <- function(spede_dir, spectra_dir, regrid_dir_name) {
 }
 
 
-run_spede <- function(spede_dir, peak_dir, regrid_dir, spede_outdir, local_threshold = 50) {
-  if (!dir.exists(spede_outdir)) dir.create(spede_outdir)
-  pk <- list.files(peak_dir, full.names = T)
-  rg <- list.files(regrid_dir, full.names = T)
-  file.copy(
-    pk, # from
-    file.path(spede_outdir, basename(pk)) # to
+run_spede <- function(spede_dir, peak_files, regrid_files, spede_outdir, local_threshold = 50) {
+  if (fs::dir_exists(spede_outdir)){
+    fs::dir_ls(spede_outdir) |>  fs::file_delete()
+  } else{
+    fs::dir_create(spede_outdir)
+  }
+  fs::file_copy(
+    peak_files, # from
+    fs::path(spede_outdir, fs::path_file(peak_files)) # to
   )
-  file.copy(
-    rg, # from
-    file.path(spede_outdir, basename(rg)) # to
+  fs::file_copy(
+    regrid_files, # from
+    fs::path(spede_outdir, fs::path_file(regrid_files)) # to
   )
   cmd <- paste(
     "python3",
@@ -74,14 +76,12 @@ run_spede <- function(spede_dir, peak_dir, regrid_dir, spede_outdir, local_thres
     "-n", basename(spede_outdir),
     "-l", local_threshold, spede_outdir, spede_outdir
   )
-  print(cmd)
   system(cmd)
-  # dte <- gsub("-", "_", Sys.Date())
-  fles <- list.files(pattern = ".csv")
+  fles <- fs::dir_ls(glob = ".csv")
   output_spede <- fles[grepl(spede_outdir, fles)]
-  file.rename(
+  fs::file_move(
     output_spede,
-    file.path(spede_outdir, output_spede)
+    fs::path(spede_outdir, output_spede)
   )
-  return(file.path(spede_outdir, output_spede))
+  return(fs::path(spede_outdir, output_spede))
 }
