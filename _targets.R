@@ -1,6 +1,7 @@
 # Load packages required to define the pipeline:
 library(targets)
 library(tarchetypes)
+here::here("_targets.R")
 
 # Set target options:
 tar_option_set(
@@ -16,29 +17,26 @@ tar_source()
 
 # Workflow
 list(
-  tar_target(
+  tar_file(
     spede_archive,
-    get_spede(), format = "file"
+    get_spede()
   ),
-  tar_target(
+  tar_file(
     spede_code,
-    extract_spede(spede_archive), format = "file"
+    extract_spede(spede_archive)
   ),
-  tar_target(
+  tar_file(
     spede_peaks,
     spede_peak(
-      spede_code, here::here("foo"), "spede_peaks"),
-    format = "file"
+      spede_code, here::here("foo"), "spede_peaks")
   ),
-  tar_target(
+  tar_file(
     spede_regrids,
     spede_regrid(
-      spede_code, here::here("foo"), "spede_regrid"),
-    format = "file"
+      spede_code, here::here("foo"), "spede_regrid")
   ),
-  tar_target(
+  tar_file(
     spede,
-    run_spede(spede_code, spede_peaks, spede_regrids, here::here("data", "SPeDE_50")),
-    format = "file"
+    run_spede(spede_code, spede_peaks, spede_regrids, here::here("data", "SPeDE_50"))
   )
 )
