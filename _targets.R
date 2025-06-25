@@ -16,6 +16,25 @@ tar_option_set(
 # Run the R scripts in the R/ folder with your custom functions:
 tar_source()
 
+
+#
+# maldipickr workflow
+#
+thresholds_maldipickr <- tibble(method = "maldipickr", threshold = c(79, 92))
+targets_maldipickr <- tar_map(
+  unlist = FALSE,
+  thresholds_maldipickr,
+  tar_target(
+    df_interpolated,
+    delineate_with_similarity(sim_interpolated, threshold = threshold * 0.01)
+  ),
+  tar_target(
+    clusters,
+    set_reference_spectra(df_interpolated, processed$metadata)
+  ),
+  tar_target(picked, pick_spectra(clusters))
+)
+
 #
 # SPeDE workflow
 #
@@ -30,17 +49,7 @@ targets_spede <- tar_map(
               local_threshold = threshold)
   ),
   tar_target(import, import_spede_clusters(spede)),
-  tar_target(picked, pick_spectra(import)),
-  tar_target(
-    summary_picked,
-    picked %>% filter(to_pick) %>%
-      transmute(
-        name = name,
-        cluster_size = cluster_size,
-        procedure = paste(method, threshold, sep = "_"),
-        isolate = str_remove(name, "_[1-8]_[A-Z][0-9]{1,2}")
-      )
-  )
+  tar_target(picked, pick_spectra(import))
 )
 
 
@@ -66,6 +75,19 @@ list(
     spectra_raw_noempty,
     remove_spectra(spectra_raw, checks)
   ),
+  tar_target(
+    processed,
+    process_spectra(spectra_raw_noempty)
+  ),
+  tar_target(
+    fm_interpolated,
+    merge_processed_spectra(list(processed))
+  ),
+  tar_target(
+    sim_interpolated,
+    coop::tcosine(fm_interpolated)
+  ),
+  targets_maldipickr,
   tar_target(
     spede_export,
     export_for_spede(spectra_raw_noempty, here::here("raw_data", "export_for_spede"))
