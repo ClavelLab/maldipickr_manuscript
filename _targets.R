@@ -47,6 +47,14 @@ targets_spede <- tar_map(
 # Workflow
 list(
   tar_file(
+    raw_data_archive,
+    get_raw_data()
+  ),
+  tar_file(
+    raw_data,
+    extract_raw_data(raw_data_archive)
+  ),
+  tar_file(
     spede_archive,
     get_spede()
   ),
