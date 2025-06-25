@@ -18,5 +18,5 @@ get_raw_data <- function(){
 
 extract_raw_data <- function(path_to_raw_data){
   zip::unzip(path_to_raw_data, exdir = here::here("raw_data"))
-  here::here("raw_data", fs::path_file(path_to_raw_data))
+  here::here("raw_data", fs::path_file(path_to_raw_data) |> fs::path_ext_remove() )
 }
