@@ -17,9 +17,6 @@ extract_spede <- function(path_to_zip){
 
 spede_peak <- function(spede_dir, spectra_dir, peak_dir_name) {
   check_data_directory()
-  if (fs::dir_exists(here::here("data", peak_dir_name))){
-    fs::dir_delete(here::here("data", peak_dir_name))
-  }
   if (fs::dir_exists("PKL4DICE")){
     fs::dir_delete("PKL4DICE")
   }
@@ -39,9 +36,7 @@ spede_peak <- function(spede_dir, spectra_dir, peak_dir_name) {
 
 spede_regrid <- function(spede_dir, spectra_dir, regrid_dir_name) {
   check_data_directory()
-  if (fs::dir_exists(here::here("data", regrid_dir_name))){
-    fs::dir_delete(here::here("data", regrid_dir_name))
-  } else {
+  if (!fs::dir_exists(here::here("data", regrid_dir_name))){
     fs::dir_create(here::here("data", regrid_dir_name))
   }
   cmd <- paste(
