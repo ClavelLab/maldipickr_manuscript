@@ -52,8 +52,32 @@ targets_spede <- tar_map(
   tar_target(picked, pick_spectra(import))
 )
 
+#
+# Biotyper workflow
+#
+targets_biotyper <- tar_map(
+  unlist = FALSE,
+  tibble(method = "Biotyper"),
+  tar_url(
+    raw_biotyper_report, "https://zenodo.org/records/15658442/files/230328-1404-1001000371.csv?download=1"
+  ),
+  tar_target(
+    biotyper_report,
+    read_biotyper_report(raw_biotyper_report)
+  ),
+  tar_target(
+    biotyper_report_clean, 
+    filter_identification(biotyper_report) |>
+      clean_biotyper_names()
+  ),
+  tar_target(
+    picked,
+    delineate_with_identification(biotyper_report_clean) |>
+      pick_spectra(biotyper_report_clean, criteria_column = "bruker_log") 
+  )
+)
 
-# Workflow
+# Overall combined workflow
 list(
   tar_file(
     raw_data_archive,
@@ -110,5 +134,6 @@ list(
     spede_regrid(
       spede_code, here::here("foo"), "spede_regrid")
   ),
-  targets_spede
+  targets_spede,
+  targets_biotyper
 )
