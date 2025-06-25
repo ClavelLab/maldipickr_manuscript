@@ -135,5 +135,13 @@ list(
       spede_code, here::here("foo"), "spede_regrid")
   ),
   targets_spede,
-  targets_biotyper
+  targets_biotyper,
+  tar_url(
+    isolate_table_file,
+    "https://zenodo.org/records/15658442/files/TableS1_isolates.csv?download=1"
+  ),
+  tar_target(
+    isolate_table,
+    read_clean_isolate_table(isolate_table_file)
+  )
 )
