@@ -32,7 +32,12 @@ targets_maldipickr <- tar_map(
     clusters,
     set_reference_spectra(df_interpolated, processed$metadata)
   ),
-  tar_target(picked, pick_spectra(clusters))
+  tar_target(picked, pick_spectra(clusters)),
+  tar_target(results,
+             picked|>
+             dplyr::select(name, membership, to_pick) |>
+             dplyr::mutate(procedure=paste(method, threshold, sep = "_"))
+  )
 )
 
 #
@@ -49,7 +54,12 @@ targets_spede <- tar_map(
               local_threshold = threshold)
   ),
   tar_target(import, import_spede_clusters(spede)),
-  tar_target(picked, pick_spectra(import))
+  tar_target(picked, pick_spectra(import)),
+  tar_target(results,
+             picked|>
+               dplyr::select(name, membership, to_pick) |>
+               dplyr::mutate(procedure=paste(method, threshold, sep = "_"))
+  )
 )
 
 #
@@ -74,6 +84,11 @@ targets_biotyper <- tar_map(
     picked,
     delineate_with_identification(biotyper_report_clean) |>
       pick_spectra(biotyper_report_clean, criteria_column = "bruker_log") 
+  ),
+  tar_target(results,
+             picked|>
+               dplyr::select(name, membership, to_pick) |>
+               dplyr::mutate(procedure=method)
   )
 )
 
