@@ -54,6 +54,22 @@ list(
     raw_data,
     extract_raw_data(raw_data_archive)
   ),
+  tar_target(
+    spectra_raw,
+    import_biotyper_spectra(raw_data)
+  ),
+  tar_target(
+    checks,
+    check_spectra(spectra_raw)
+  ),
+  tar_target(
+    spectra_raw_noempty,
+    remove_spectra(spectra_raw, checks)
+  ),
+  tar_target(
+    spede_export,
+    export_for_spede(spectra_raw_noempty, here::here("raw_data", "export_for_spede"))
+  ),
   tar_file(
     spede_archive,
     get_spede()

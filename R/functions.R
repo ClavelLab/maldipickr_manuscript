@@ -20,3 +20,9 @@ extract_raw_data <- function(path_to_raw_data){
   zip::unzip(path_to_raw_data, exdir = here::here("raw_data"))
   here::here("raw_data", fs::path_file(path_to_raw_data) |> fs::path_ext_remove() )
 }
+
+export_for_spede <- function(maldi_object, output_dir) {
+  fs::dir_create(output_dir)
+  MALDIquantForeign::exportTab(maldi_object, path = output_dir)
+  return(output_dir)
+}
