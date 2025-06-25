@@ -72,12 +72,12 @@ run_spede <- function(spede_dir, peak_files, regrid_files, spede_outdir, local_t
     "-l", local_threshold, spede_outdir, spede_outdir
   )
   system(cmd)
-  fles <- fs::dir_ls(glob = "*.csv")
+  fles <- fs::dir_ls(path = spede_outdir, glob = "*.csv")
   output_spede <- fles[grepl(fs::path_file(spede_outdir), fles)]
   final_output_spede <- fs::path(spede_outdir, fs::path_file(spede_outdir), ext = "csv")
   fs::file_move(
     output_spede,
     final_output_spede
-    )
+  )
   return(final_output_spede)
 }
