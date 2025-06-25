@@ -142,12 +142,12 @@ list(
   tar_file(
     spede_peaks,
     spede_peak(
-      spede_code, here::here("foo"), "spede_peaks")
+      spede_code, spede_export, "spede_peaks")
   ),
   tar_file(
     spede_regrids,
     spede_regrid(
-      spede_code, here::here("foo"), "spede_regrid")
+      spede_code, spede_export, "spede_regrid")
   ),
   targets_spede,
   targets_biotyper,
