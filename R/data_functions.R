@@ -54,7 +54,7 @@ merge_and_clean_results<-function(all_results, isolate_table){
       ) |>
     dplyr::left_join(isolate_table, by = "spectra_identifier") |>
     dplyr::mutate(
-      species_label = forcats::as_factor(species_label) |> forcats::fct_rev(),
+      species_label = as.factor(species_label) |> forcats::fct_rev(),
       procedure = factor(
         procedure,
         levels = c("maldipickr_79", "maldipickr_92", "SPeDE_20", "SPeDE_50", "Biotyper"),
