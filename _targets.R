@@ -153,7 +153,7 @@ list(
   targets_biotyper,
   tar_url(
     isolate_table_file,
-    "https://zenodo.org/records/15658442/files/TableS1_isolates.csv?download=1"
+    "https://zenodo.org/records/15744631/files/TableS1_isolates.csv?download=1"
   ),
   tar_target(
     isolate_table,

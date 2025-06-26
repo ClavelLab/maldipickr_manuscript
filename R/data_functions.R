@@ -34,14 +34,14 @@ read_clean_isolate_table <- function(isolate_table_file){
                     strain_identifier = col_character(),
                     phylum = col_character(),
                     family = col_character(),
-                    included_in_analysis = col_character(),
                     cultivation_media = col_character(),
-                    straininfo_doi = col_character()
+                    straininfo_doi = col_character(),
+                    spectra_identifier = col_character()
                   )) |>
     dplyr::mutate(
       species_label = if_else( species == "Lachnospira rogosae sp. nov.",
                                glue::glue("italic(\"Lachnospira rogosae\")~sp.~nov."),
                                glue::glue("italic(\"{species}\")"))#,
     ) |>
-    dplyr::select(strain_identifier, species, species_label)
+    dplyr::select(strain_identifier, species, species_label,spectra_identifier)
 }
