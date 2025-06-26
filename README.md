@@ -1,27 +1,32 @@
+# workflow for maldipickr manuscript
+
+This repository contains the code for the comparison of dereplication approaches as part of the manuscript describing the [R package maldipickr](https://clavellab.github.io/maldipickr/) using data at [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15744631.svg)](https://doi.org/10.5281/zenodo.15744631).
 
 
+## Setup the environment for the workflow
 
-## Installation
+These analyses were conducted in R 4.3.1 and Python 3.9.13 orchestrated from Rstudio. We recommend setting up R and specific versions using [`rig`](https://github.com/r-lib/rig#id-features), and getting Rstudio from [Posit](https://posit.co/download/rstudio-desktop/). We also use [`renv`](https://rstudio.github.io/renv) for reproducible environment, which can be installed in R with `install.packages("renv")`.
 
-### Set up R dependencies
 
-- Ensure the [R package `{renv}`](https://rstudio.github.io/renv/articles/renv.html) is installed.
-- Use `renv::restore()` to set up all R dependencies
+1. Open Rstudio and create a new project via "File > New Project..."
+2. Select "Version Control" and then "Git"
+	1. Type `https://github.com/ClavelLab/maldipickr_manuscript` in Repository URL.
+	2. Make sure the project is going to be created in the correct subdirectory on your computer, or else edit accordingly
+	3. Click on "Create project"
+
+If you comfortable with the command line and git, clone the repository either with SSH or HTTPS in a suitable location.
+
+3. Rstudio warns you that `One or more packages recorded in the lockfile are not installed` because a couple of R packages and dependencies are needed.
+	1. Install the dependencies by typing `renv::restore()` in the Console and agree to the installation of the packages.
+	2. Check that all dependencies are set by typing `renv::status()` in the Console where you should have `No issues found`
+
+
+One of the tool in the benchmark uses Python, but these dependencies can be managed from R as well using `reticulate` R package.
+
+## Run the workflow
+
+Our analysis workflow is orchestrated by [`targets`](https://docs.ropensci.org/targets/) and can be run with the following command in the R console:
 
 ```r
-# install.packages("renv") # if renv is not installed
-renv::restore()
-```
-
-### Set up Python dependencies
-
-One of the tool in the benchmark uses Python, but these dependencies can be managed from R as well.
-
-
-```r
-# reticulate::install_python(version = "3.9.13") # If the installed python version is <3.9
-renv::use_python() # with virtualenv
-reticulate::py_install(packages = c("pandas==1.4.4",
-                                    "numpy==1.22.0",
-                                    "numba==0.56.0"))
+targets::tar_make()
 ```
