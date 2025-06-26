@@ -158,5 +158,16 @@ list(
   tar_target(
     isolate_table,
     read_clean_isolate_table(isolate_table_file)
+  ),
+  tarchetypes::tar_combine(
+    all_results,
+    targets_maldipickr[["results"]],
+    targets_spede[["results"]],
+    targets_biotyper[["results"]],
+    command = bind_rows(!!!.x)
+  ),
+  tar_target(
+    all_results_clean, 
+    merge_and_clean_results(all_results, isolate_table)
   )
 )

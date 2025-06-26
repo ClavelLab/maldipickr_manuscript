@@ -45,3 +45,24 @@ read_clean_isolate_table <- function(isolate_table_file){
     ) |>
     dplyr::select(strain_identifier, species, species_label,spectra_identifier)
 }
+
+merge_and_clean_results<-function(all_results, isolate_table){
+  spectra_name_pattern <- isolate_table$spectra_identifier |> paste(collapse = "|")
+  all_results |>
+    dplyr::mutate(
+      spectra_identifier = stringr::str_extract(name, spectra_name_pattern)
+      ) |>
+    dplyr::left_join(isolate_table, by = "spectra_identifier") |>
+    dplyr::mutate(
+      species_label = forcats::as_factor(species_label) |> forcats::fct_rev(),
+      procedure = factor(
+        procedure,
+        levels = c("maldipickr_79", "maldipickr_92", "SPeDE_20", "SPeDE_50", "Biotyper"),
+        ordered = T
+      ) |> fct_recode(
+        "maldipickr (loose)"="maldipickr_79",
+        "maldipickr (strict)" = "maldipickr_92",
+        "SPeDE (loose)"="SPeDE_20",
+        "SPeDE (strict)"="SPeDE_50") |> forcats::fct_rev()
+    )
+}
