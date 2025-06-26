@@ -5,9 +5,9 @@ This repository contains the code for the comparison of dereplication approaches
 
 ## Setup the environment for the workflow
 
-These analyses were conducted in R 4.3.1 and Python 3.9.13 orchestrated from Rstudio. We recommend setting up R and specific versions using [`rig`](https://github.com/r-lib/rig#id-features), and getting Rstudio from [Posit](https://posit.co/download/rstudio-desktop/). We also use [`renv`](https://rstudio.github.io/renv) for reproducible environment, which can be installed in R with `install.packages("renv")`.
+These analyses were conducted in R 4.3.1 and Python 3.9.13 orchestrated from Rstudio. We recommend setting up R and specific versions using [`rig`](https://github.com/r-lib/rig#id-features), and getting Rstudio from [Posit](https://posit.co/download/rstudio-desktop/). We also use [`renv`](https://rstudio.github.io/renv) for reproducible environment, which can be installed in R with `install.packages("renv")` and [`uv`](https://docs.astral.sh/uv/) as a very fast Python package manager (as one of the tool in the benchmark uses Python).
 
-
+0. Make sure you have installed [`uv`](https://docs.astral.sh/uv/)
 1. Open Rstudio and create a new project via "File > New Project..."
 2. Select "Version Control" and then "Git"
 	1. Type `https://github.com/ClavelLab/maldipickr_manuscript` in Repository URL.
@@ -20,8 +20,6 @@ If you comfortable with the command line and git, clone the repository either wi
 	1. Install the dependencies by typing `renv::restore()` in the Console and agree to the installation of the packages.
 	2. Check that all dependencies are set by typing `renv::status()` in the Console where you should have `No issues found`
 
-
-One of the tool in the benchmark uses Python, but these dependencies can be managed from R as well using `reticulate` R package.
 
 ## Run the workflow
 
