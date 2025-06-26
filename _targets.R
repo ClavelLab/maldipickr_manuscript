@@ -176,6 +176,6 @@ list(
   ),
   tar_file(
     metrics_results_tableS2,
-    readr::write_excel_csv(clustering_metrics, here::here("TableS2_clustering_metrics.csv"))
+    write_clustering_metrics(clustering_metrics, here::here("TableS2_clustering_metrics.csv"))
   )
 )

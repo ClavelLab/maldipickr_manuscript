@@ -7,3 +7,8 @@ get_clustering_metrics<-function(all_results_clean){
       completeness = clevr::completeness(name, membership)
     )  |>  dplyr::arrange(dplyr::desc(ARI))
 }
+
+write_clustering_metrics<-function(clustering_metrics, path){
+  readr::write_excel_csv(clustering_metrics, path)
+  return(path)
+}
