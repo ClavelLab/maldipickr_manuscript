@@ -37,14 +37,22 @@ spede_peak <- function(spede_dir, spectra_dir, peak_dir_name) {
   )
 }
 
+check_uv <- function() {
+  if (length(Sys.which("uv"))==0) {
+    stop(
+      "uv not found: Please install via https://docs.astral.sh/uv/getting-started/installation/"
+    )
+  }
+}
 
 spede_regrid <- function(spede_dir, spectra_dir, regrid_dir_name) {
   check_data_directory()
+  check_uv()
   if (!fs::dir_exists(here::here("data", regrid_dir_name))) {
     fs::dir_create(here::here("data", regrid_dir_name))
   }
   cmd <- paste(
-    "python3",
+    "uv run --with 'pandas==1.4.4' --with 'numpy==1.22.0'",
     here::here(spede_dir, "data_preprocessing/regridding/ReGrid.py"),
     spectra_dir,
     here::here("data", regrid_dir_name)
@@ -64,6 +72,7 @@ run_spede <- function(
   spede_outdir,
   local_threshold = 50
 ) {
+  check_uv()
   if (fs::dir_exists(spede_outdir)) {
     fs::dir_ls(spede_outdir) |> fs::file_delete()
   } else {
@@ -78,7 +87,7 @@ run_spede <- function(
     fs::path(spede_outdir, fs::path_file(regrid_files)) # to
   )
   cmd <- paste(
-    "python3",
+    "uv run --with 'pandas==1.4.4' --with 'numpy==1.22.0' --with 'numba==0.56.0'",
     here::here(spede_dir, "Spectrum_Processing/SPeDE.py"),
     "-n",
     basename(spede_outdir),
