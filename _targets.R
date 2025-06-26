@@ -177,5 +177,9 @@ list(
   tar_file(
     metrics_results_tableS2,
     write_clustering_metrics(clustering_metrics, here::here("TableS2_clustering_metrics.csv"))
+  ),
+  tar_file(
+    clustering_results_tableS3,
+    write_clustering_results(all_results_clean, here::here("TableS3_clustering_results.csv"))
   )
 )
