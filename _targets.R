@@ -181,5 +181,13 @@ list(
   tar_file(
     clustering_results_tableS3,
     write_clustering_results(all_results_clean, here::here("TableS3_clustering_results.csv"))
+  ),
+  tar_target(
+    plot_dereplication,
+    plot_dereplication_approaches(all_results_clean)
+  ),
+  tar_file(
+    plot_dereplication_png,
+    write_plot(plot_dereplication, here::here("Figure1.png"))
   )
 )
