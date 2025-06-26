@@ -169,5 +169,13 @@ list(
   tar_target(
     all_results_clean, 
     merge_and_clean_results(all_results, isolate_table)
+  ),
+  tar_target(
+    clustering_metrics,
+    get_clustering_metrics(all_results_clean)
+  ),
+  tar_file(
+    metrics_results_tableS2,
+    readr::write_excel_csv(clustering_metrics, here::here("TableS2_clustering_metrics.csv"))
   )
 )

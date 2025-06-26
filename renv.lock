@@ -215,6 +215,17 @@
       ],
       "Hash": "4a5eca1070ecfe97e68727ed4b9a89fa"
     },
+    "aricode": {
+      "Package": "aricode",
+      "Version": "1.0.3",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "Matrix",
+        "Rcpp"
+      ],
+      "Hash": "7a20f4af98dacddcea18dfd56567d872"
+    },
     "askpass": {
       "Package": "askpass",
       "Version": "1.2.0",
@@ -367,6 +378,20 @@
         "tibble"
       ],
       "Hash": "f61dbaec772ccd2e17705c1e872e9e7c"
+    },
+    "clevr": {
+      "Package": "clevr",
+      "Version": "0.1.2",
+      "Source": "Repository",
+      "Repository": "RSPM",
+      "Requirements": [
+        "BH",
+        "Matrix",
+        "R",
+        "Rcpp",
+        "stats"
+      ],
+      "Hash": "3aa0e4c3e502f8600f349011bd71aec0"
     },
     "cli": {
       "Package": "cli",
