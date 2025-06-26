@@ -33,10 +33,11 @@ targets_maldipickr <- tar_map(
     set_reference_spectra(df_interpolated, processed$metadata)
   ),
   tar_target(picked, pick_spectra(clusters)),
-  tar_target(results,
-             picked|>
-             dplyr::select(name, membership, to_pick) |>
-             dplyr::mutate(procedure=paste(method, threshold, sep = "_"))
+  tar_target(
+    results,
+    picked |>
+      dplyr::select(name, membership, to_pick) |>
+      dplyr::mutate(procedure = paste(method, threshold, sep = "_"))
   )
 )
 
@@ -49,16 +50,21 @@ targets_spede <- tar_map(
   thresholds_spede,
   tar_file(
     spede,
-    run_spede(spede_code, spede_peaks, spede_regrids,
-              here::here("data", paste(method, threshold, sep = "_")),
-              local_threshold = threshold)
+    run_spede(
+      spede_code,
+      spede_peaks,
+      spede_regrids,
+      here::here("data", paste(method, threshold, sep = "_")),
+      local_threshold = threshold
+    )
   ),
   tar_target(import, import_spede_clusters(spede)),
   tar_target(picked, pick_spectra(import)),
-  tar_target(results,
-             picked|>
-               dplyr::select(name, membership, to_pick) |>
-               dplyr::mutate(procedure=paste(method, threshold, sep = "_"))
+  tar_target(
+    results,
+    picked |>
+      dplyr::select(name, membership, to_pick) |>
+      dplyr::mutate(procedure = paste(method, threshold, sep = "_"))
   )
 )
 
@@ -69,26 +75,28 @@ targets_biotyper <- tar_map(
   unlist = FALSE,
   tibble(method = "Biotyper"),
   tar_url(
-    raw_biotyper_report, "https://zenodo.org/records/15658442/files/230328-1404-1001000371.csv?download=1"
+    raw_biotyper_report,
+    "https://zenodo.org/records/15658442/files/230328-1404-1001000371.csv?download=1"
   ),
   tar_target(
     biotyper_report,
     read_biotyper_report(raw_biotyper_report)
   ),
   tar_target(
-    biotyper_report_clean, 
+    biotyper_report_clean,
     filter_identification(biotyper_report) |>
       clean_biotyper_names()
   ),
   tar_target(
     picked,
     delineate_with_identification(biotyper_report_clean) |>
-      pick_spectra(biotyper_report_clean, criteria_column = "bruker_log") 
+      pick_spectra(biotyper_report_clean, criteria_column = "bruker_log")
   ),
-  tar_target(results,
-             picked|>
-               dplyr::select(name, membership, to_pick) |>
-               dplyr::mutate(procedure=method)
+  tar_target(
+    results,
+    picked |>
+      dplyr::select(name, membership, to_pick) |>
+      dplyr::mutate(procedure = method)
   )
 )
 
@@ -129,7 +137,10 @@ list(
   targets_maldipickr,
   tar_target(
     spede_export,
-    export_for_spede(spectra_raw_noempty, here::here("raw_data", "export_for_spede"))
+    export_for_spede(
+      spectra_raw_noempty,
+      here::here("raw_data", "export_for_spede")
+    )
   ),
   tar_file(
     spede_archive,
@@ -142,12 +153,18 @@ list(
   tar_file(
     spede_peaks,
     spede_peak(
-      spede_code, spede_export, "spede_peaks")
+      spede_code,
+      spede_export,
+      "spede_peaks"
+    )
   ),
   tar_file(
     spede_regrids,
     spede_regrid(
-      spede_code, spede_export, "spede_regrid")
+      spede_code,
+      spede_export,
+      "spede_regrid"
+    )
   ),
   targets_spede,
   targets_biotyper,
@@ -167,7 +184,7 @@ list(
     command = bind_rows(!!!.x)
   ),
   tar_target(
-    all_results_clean, 
+    all_results_clean,
     merge_and_clean_results(all_results, isolate_table)
   ),
   tar_target(
@@ -176,11 +193,17 @@ list(
   ),
   tar_file(
     metrics_results_tableS2,
-    write_clustering_metrics(clustering_metrics, here::here("TableS2_clustering_metrics.csv"))
+    write_clustering_metrics(
+      clustering_metrics,
+      here::here("TableS2_clustering_metrics.csv")
+    )
   ),
   tar_file(
     clustering_results_tableS3,
-    write_clustering_results(all_results_clean, here::here("TableS3_clustering_results.csv"))
+    write_clustering_results(
+      all_results_clean,
+      here::here("TableS3_clustering_results.csv")
+    )
   ),
   tar_target(
     plot_dereplication,
