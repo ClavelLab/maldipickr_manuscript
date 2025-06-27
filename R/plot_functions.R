@@ -80,10 +80,10 @@ write_plot <- function(plot_results, path) {
   ggplot2::ggsave(
     path,
     plot_results,
-    height = 8,
-    width = 8,
+    height = 9,
+    width = 9,
     device = "eps",
-    dpi = 300
+    dpi = 350
   )
   return(path)
 }
