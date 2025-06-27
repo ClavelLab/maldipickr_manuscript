@@ -82,7 +82,7 @@ write_plot <- function(plot_results, path) {
     plot_results,
     height = 8,
     width = 8,
-    device = grDevices::png,
+    device = "eps",
     dpi = 300
   )
   return(path)

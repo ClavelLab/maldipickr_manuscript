@@ -210,7 +210,7 @@ list(
     plot_dereplication_approaches(all_results_clean)
   ),
   tar_file(
-    plot_dereplication_png,
-    write_plot(plot_dereplication, here::here("Figure1.png"))
+    plot_dereplication_file,
+    write_plot(plot_dereplication, here::here("Figure1.eps"))
   )
 )
