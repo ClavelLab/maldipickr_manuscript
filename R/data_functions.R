@@ -30,6 +30,12 @@ export_for_spede <- function(maldi_object, output_dir) {
   return(output_dir)
 }
 
+export_for_idbac <- function(maldi_object, output_dir) {
+  fs::dir_create(output_dir)
+  MALDIquantForeign::exportMzMl(maldi_object, path = output_dir)
+  return(output_dir)
+}
+
 read_clean_isolate_table <- function(isolate_table_file) {
   readr::read_csv(
     isolate_table_file,

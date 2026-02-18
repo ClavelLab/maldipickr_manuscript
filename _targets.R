@@ -168,6 +168,13 @@ list(
   ),
   targets_spede,
   targets_biotyper,
+  tar_target(
+    idbac_export,
+    export_for_idbac(
+      spectra_raw_noempty,
+      here::here("raw_data", "export_for_idbac")
+    )
+  ),
   tar_url(
     isolate_table_file,
     "https://zenodo.org/records/15744631/files/TableS1_isolates.csv?download=1"
