@@ -181,6 +181,26 @@ targets_asare_data <- tar_map(
   )
 )
 
+targets_asare <- tar_map(
+  unlist = FALSE,
+  tibble(method = "Asare_maldipickr", threshold = c(79, 92)),
+  tar_target(
+    df_interpolated,
+    delineate_with_similarity(sim_interpolated_Asare, threshold = threshold * 0.01)
+  ),
+  tar_target(
+    clusters,
+    set_reference_spectra(df_interpolated, processed_Asare$metadata)
+  ),
+  tar_target(picked, pick_spectra(clusters)),
+  tar_target(
+    results,
+    picked |>
+      dplyr::select(name, membership, to_pick) |>
+      dplyr::mutate(procedure = paste(method, threshold, sep = "_"))
+  )
+)
+
 # Overall combined workflow
 list(
   tar_file(
@@ -303,5 +323,33 @@ list(
     plot_dereplication_file,
     write_plot(plot_dereplication, here::here("Figure1.eps"))
   ),
-  targets_asare_data
+  targets_asare_data,
+  targets_asare,
+  tar_combine(
+    all_asare,
+    targets_asare[["results"]],
+    command = bind_rows(!!!.x)
+  ),
+  tar_target(
+    all_asare_clean,
+    all_asare |>
+      dplyr::left_join(clostritof_tax_all_Asare,
+                       by = c("name" = "sanitized_name")) |> 
+      dplyr::select(-valid_taxonomy)
+  ),
+  tar_target(
+    clustering_metrics_asare,
+    bind_rows(
+      get_clustering_metrics(all_asare_clean, "species") |> mutate(level = "species"),
+      get_clustering_metrics(all_asare_clean, "strain") |> mutate(level = "strain")
+    ) |> relocate(level,.after = n_clusters) |> 
+      arrange(level,procedure)
+  ),
+  tar_file(
+    metrics_results_tableS4,
+    write_clustering_metrics(
+      clustering_metrics_asare,
+      here::here("TableS4_clustering_metrics_Asare.csv")
+    )
+  )
 )
