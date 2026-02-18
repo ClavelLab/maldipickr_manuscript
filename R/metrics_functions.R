@@ -30,3 +30,10 @@ write_clustering_results_asare <- function(all_results_clean, path) {
     write_excel_csv(path)
   return(path)
 }
+
+write_total_clusters_asare <- function(total_clusters, path){
+  total_clusters |> 
+    arrange(procedure,total) |> 
+    write_excel_csv(path)
+  return(path)
+}

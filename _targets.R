@@ -198,6 +198,16 @@ targets_asare <- tar_map(
     picked |>
       dplyr::select(name, membership, to_pick) |>
       dplyr::mutate(procedure = paste(method, threshold, sep = "_"))
+  ),
+  tar_target(
+    linkage,
+    evaluate_linkage(sim_interpolated_Asare, threshold = threshold * 0.01) |>
+      dplyr::mutate(procedure = paste(method, threshold, sep = "_"))
+  ),
+  tar_target(
+    total_clusters,
+    get_total_clusters(linkage) |>
+      dplyr::mutate(procedure = paste(method, threshold, sep = "_"))
   )
 )
 
@@ -362,5 +372,16 @@ list(
   tar_target(
     summary_asare,
     summary_dataset_asare(clostritof_tax_all_Asare)
+  ),
+  tar_combine(
+    total_clusters_asare,
+    targets_asare[["total_clusters"]],
+    command = bind_rows(!!!.x)
+  ),
+  tar_file(
+    write_total_clusters_asare(
+      total_clusters_asare,
+      here::here("TableS6_total_clusters_linkage_Asare.csv")
+    )
   )
 )
