@@ -1,11 +1,11 @@
-get_clustering_metrics <- function(all_results_clean) {
+get_clustering_metrics <- function(all_results_clean, level) {
   all_results_clean |>
     dplyr::group_by(procedure) |>
     dplyr::summarise(
       n_clusters = sum(to_pick),
-      ARI = aricode::ARI(strain_identifier, membership),
-      homogeneity = clevr::homogeneity(strain_identifier, membership),
-      completeness = clevr::completeness(strain_identifier, membership)
+      ARI = aricode::ARI(.data[[level]], membership),
+      homogeneity = clevr::homogeneity(.data[[level]], membership),
+      completeness = clevr::completeness(.data[[level]], membership)
     ) |>
     dplyr::arrange(dplyr::desc(ARI))
 }

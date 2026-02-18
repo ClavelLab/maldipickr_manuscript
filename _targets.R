@@ -223,7 +223,7 @@ list(
   ),
   tar_target(
     clustering_metrics,
-    get_clustering_metrics(all_results_clean)
+    get_clustering_metrics(all_results_clean, "strain_identifier")
   ),
   tar_file(
     metrics_results_tableS2,
