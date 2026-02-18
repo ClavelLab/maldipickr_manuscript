@@ -1,6 +1,6 @@
 # workflow for maldipickr manuscript
 
-This repository contains the code for the comparison of dereplication approaches as part of the manuscript describing the [R package maldipickr](https://clavellab.github.io/maldipickr/) ([CRAN](https://doi.org/10.32614/CRAN.package.maldipickr)) using data at [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15744631.svg)](https://doi.org/10.5281/zenodo.15744631).
+This repository contains the code for the comparison of dereplication approaches as part of the manuscript describing the [R package maldipickr](https://clavellab.github.io/maldipickr/) ([CRAN](https://doi.org/10.32614/CRAN.package.maldipickr)) using data at [zenodo.org/10.5281/zenodo.15744631](https://doi.org/10.5281/zenodo.15744631).
 
 
 ## Setup the environment for the workflow
