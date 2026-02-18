@@ -3,9 +3,9 @@ get_clustering_metrics <- function(all_results_clean) {
     dplyr::group_by(procedure) |>
     dplyr::summarise(
       n_clusters = sum(to_pick),
-      ARI = aricode::ARI(name, membership),
-      homogeneity = clevr::homogeneity(name, membership),
-      completeness = clevr::completeness(name, membership)
+      ARI = aricode::ARI(strain_identifier, membership),
+      homogeneity = clevr::homogeneity(strain_identifier, membership),
+      completeness = clevr::completeness(strain_identifier, membership)
     ) |>
     dplyr::arrange(dplyr::desc(ARI))
 }
