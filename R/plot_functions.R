@@ -3,8 +3,9 @@ plot_dereplication_approaches <- function(all_results_clean) {
     A#
     BC
     DE
+    FG
   "
-
+  
   p <- all_results_clean |>
     dplyr::count(procedure, species_label, membership) |>
     # mutate(species_label = forcats::as_factor(species_label) |> forcats::fct_rev()
@@ -31,24 +32,17 @@ plot_dereplication_approaches <- function(all_results_clean) {
     )) +
     ggplot2::geom_tile(color = "white", linewidth = 0.7) +
     ggplot2::geom_text(
-      data = function(x) x[x$n %in% c(1, 2, 5), ],
+      data = function(x) x[x$n %in% 1:5, ],
       aes(label = n_label),
       color = "white"
     ) +
     ggplot2::geom_text(
-      data = function(x) x[!x$n %in% c(1, 2, 5), ],
+      data = function(x) x[!x$n %in% 1:5, ],
       aes(label = n_label),
       color = "black"
     ) +
     ggplot2::scale_y_discrete(labels = scales::label_parse()) +
-    ggplot2::scale_fill_manual(
-      values = c(
-        "#000000FF",
-        "#440154FF",
-        "#2A788EFF",
-        "#22A884FF",
-        "#7AD151FF"
-      ),
+    ggplot2::scale_fill_viridis_d(option = "E",
       labels = c(
         "1" = "1 (absence of clustering)",
         "8" = "8 (expected clustering)"
@@ -64,7 +58,7 @@ plot_dereplication_approaches <- function(all_results_clean) {
     ggplot2::theme(
       # axis.text.y = element_text(face = "italic"),
       legend.position = "inside",
-      legend.position.inside = c(0.53, 0.85),
+      legend.position.inside = c(0.59, 0.90),
       strip.background = ggplot2::element_rect(fill = "gray90"),
       panel.background = ggplot2::element_rect(fill = "white"),
       plot.background = ggplot2::element_rect(fill = "white"),
@@ -80,7 +74,7 @@ write_plot <- function(plot_results, path) {
   ggplot2::ggsave(
     path,
     plot_results,
-    height = 9,
+    height = 10,
     width = 9,
     device = "eps",
     dpi = 350
