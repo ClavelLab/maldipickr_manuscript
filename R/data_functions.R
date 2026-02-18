@@ -174,3 +174,19 @@ get_asare_taxonomy <- function(spectra_names){
     ) %>% 
     relocate(sanitized_name, strain)
 }
+
+summary_dataset_asare <- function(tax_asare){
+  n_asare <- tax_asare |> 
+    dplyr::filter(valid_taxonomy) |>
+    dplyr::group_by(species) |>
+    dplyr::summarise(n_spectra = dplyr::n(),
+                     n_strain = dplyr::n_distinct(strain))
+  
+  glue::glue(
+    "We used {total_spectra} spectra from {total_strains} strains and {total_species} species, where {species_with_strains} species had more than one strain",
+    total_spectra = sum(n_asare$n_spectra),
+    total_species = nrow(n_asare),
+    total_strains = sum(n_asare$n_strain),
+    species_with_strains = filter(n_asare, n_strain > 1) |> nrow()
+    )
+}
