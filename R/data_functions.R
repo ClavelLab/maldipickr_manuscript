@@ -133,3 +133,44 @@ merge_and_clean_results <- function(all_results, isolate_table) {
         forcats::fct_rev()
     )
 }
+
+# Snippet to fetch specific files from the zenodo archive of Asare et al. 2023
+get_asare_data <- function(filename){
+  fs::dir_create(here::here("data"))
+  destfile <- here::here("data",filename)
+  curl::curl_download(
+    url = paste0(
+      "https://zenodo.org/records/7773644/files/",
+      filename,
+      "?download=1"),
+    destfile = destfile
+  )
+  destfile
+}
+
+get_asare_taxonomy <- function(spectra_names){
+  # Extraction of taxonomy from path of raw data
+  # because of issues with all strains from Bioaster
+  # These strains with FAM prefix in strain name) have duplicated metadata
+  # for the different spectra. Probably the strain was measured twice, 
+  # but the fullName is the same and the name as well.
+  spectra_names %>%
+    select(sanitized_name, file) %>% 
+    separate_wider_regex(
+      file,
+      patterns = c(
+        ".*Library_strains_142x/",
+        genus="\\w+"," ",
+        species="\\w+"," ",
+        strain="[^\\s]+",
+        " ClostriTOF.*"
+      )
+    ) %>% 
+    mutate(
+      sanitized_name = make.unique(sanitized_name),
+      species = paste(genus, species),
+      strain = paste(species, strain),
+      valid_taxonomy = !stringr::str_detect(species, "_") & !stringr::str_detect(species, " sp")
+    ) %>% 
+    relocate(sanitized_name, strain)
+}

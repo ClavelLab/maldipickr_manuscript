@@ -125,6 +125,62 @@ targets_idbac <- tar_map(
   )
 )
 
+#
+# Reanalysis Asare et al. 2023 data
+#
+targets_asare_data <- tar_map(
+  unlist = FALSE,
+  tibble(method = c("Asare")),
+  tar_file(
+    clostritof_spectra_archive,
+    get_asare_data("Library_strains_142x.zip")
+  ),
+  tar_target(
+    clostritof_spectra_dir, 
+    extract_raw_data(clostritof_spectra_archive)
+  ),
+  tar_target(
+    spectra_raw,
+    import_biotyper_spectra(clostritof_spectra_dir) %>% suppressWarnings()
+  ),
+  tar_target(
+    checks,
+    check_spectra(spectra_raw, tolerance = 20)
+  ),
+  tar_target( # Filter-out non empty spectra and unusual spectra
+    spectra_raw_noempty,
+    remove_spectra(spectra_raw, checks)
+  ),
+  tar_target(
+    spectra_names,
+    get_spectra_names(spectra_raw_noempty)
+  ),
+  tar_target(
+    clostritof_tax_all,
+    get_asare_taxonomy(spectra_names)
+  ),
+  tar_target(
+    valid_tax_spectra,
+    spectra_raw_noempty[clostritof_tax_all$valid_taxonomy]
+  ),
+  tar_target(
+    sanitized_names,
+    get_spectra_names(valid_tax_spectra) %>% dplyr::mutate(sanitized_name = base::make.unique(sanitized_name))
+  ),
+  tar_target(
+    processed,
+    process_spectra(valid_tax_spectra, spectra_names = sanitized_names)
+  ),
+  tar_target(
+    fm_interpolated,
+    merge_processed_spectra(list(processed))
+  ),
+  tar_target(
+    sim_interpolated,
+    coop::tcosine(fm_interpolated)
+  )
+)
+
 # Overall combined workflow
 list(
   tar_file(
@@ -246,5 +302,6 @@ list(
   tar_file(
     plot_dereplication_file,
     write_plot(plot_dereplication, here::here("Figure1.eps"))
-  )
+  ),
+  targets_asare_data
 )
