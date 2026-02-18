@@ -81,3 +81,28 @@ write_plot <- function(plot_results, path, height = 10, width = 9) {
   )
   return(path)
 }
+
+plot_linkage_min_similarity <- function(linkage_df){
+  threshold_df <- linkage_df |>
+    select(procedure) |>
+    distinct() |> 
+    tidyr::separate_wider_delim(
+      procedure, "_",
+      names = c(NA,NA,"threshold"),
+      cols_remove = FALSE) |>
+    mutate(threshold = as.numeric(threshold) * 0.01)
+  
+  linkage_df |> 
+    ggplot(aes(x = method, y = min_similarity, color = method))+
+    geom_violin()+
+    geom_point(position = position_jitter(width = 0.1), shape = 23)+
+    geom_hline(data = threshold_df, aes(yintercept = threshold), linetype = "dashed")+
+    geom_text(data = threshold_df, aes(y = threshold, label = threshold, x = 0.5),
+              vjust = -1,hjust = 0, color = "black")+
+    labs(x = "Clustering linkage", y = "Minimum similarity per cluster",
+         color = "Clustering linkage")+
+    theme_cowplot()+
+    scale_color_okabe_ito()+
+    facet_wrap(~procedure, nrow = 2)+
+    theme(legend.position = "bottom")
+}

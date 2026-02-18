@@ -6,9 +6,7 @@ here::here("_targets.R")
 
 # Set target options:
 tar_option_set(
-  packages = c("maldipickr", "tidyverse", "coop"),
-  #              "MALDIquant","readxl", "ggplot2", "cowplot",
-  #              "aricode", "ggokabeito"),
+  packages = c("maldipickr", "tidyverse", "coop", "cowplot","ggokabeito"),
   # packages that your targets need to run
   format = "qs", # default storage format
 )
@@ -379,9 +377,23 @@ list(
     command = bind_rows(!!!.x)
   ),
   tar_file(
+    total_clusters_linkage_tableS6,
     write_total_clusters_asare(
       total_clusters_asare,
       here::here("TableS6_total_clusters_linkage_Asare.csv")
     )
+  ),
+  tar_combine(
+    linkage_asare,
+    targets_asare[["linkage"]],
+    command = bind_rows(!!!.x)
+  ),
+  tar_target(
+    plot_linkage,
+    plot_linkage_min_similarity(linkage_asare)
+  ),
+  tar_file(
+    plot_linkage_file,
+    write_plot(plot_linkage, here::here("FigureS1.eps"), 9,6)
   )
 )
