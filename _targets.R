@@ -100,6 +100,31 @@ targets_biotyper <- tar_map(
   )
 )
 
+#
+# IDBac workflow
+#
+targets_idbac <- tar_map(
+  unlist = FALSE,
+  tibble(method = c("IDBacPresence", "IDBacCosine"), threshold = 65),
+  tar_target(
+    sim_interpolated, get_idbac_matrix(method)
+  ),
+  tar_target(
+    df_interpolated,
+    delineate_with_similarity(sim_interpolated, threshold = threshold * 0.01)
+  ),
+  tar_target(
+    picked, 
+    format_idbac_results(df_interpolated)
+  ),
+  tar_target(
+    results,
+    picked |>
+      dplyr::select(name, membership, to_pick) |>
+      dplyr::mutate(procedure = paste(method, threshold, sep = "_"))
+  )
+)
+
 # Overall combined workflow
 list(
   tar_file(
@@ -175,6 +200,7 @@ list(
       here::here("raw_data", "export_for_idbac")
     )
   ),
+  targets_idbac,
   tar_url(
     isolate_table_file,
     "https://zenodo.org/records/15744631/files/TableS1_isolates.csv?download=1"
@@ -188,6 +214,7 @@ list(
     targets_maldipickr[["results"]],
     targets_spede[["results"]],
     targets_biotyper[["results"]],
+    targets_idbac[["results"]],
     command = bind_rows(!!!.x)
   ),
   tar_target(

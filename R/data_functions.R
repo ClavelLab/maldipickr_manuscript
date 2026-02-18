@@ -36,6 +36,46 @@ export_for_idbac <- function(maldi_object, output_dir) {
   return(output_dir)
 }
 
+# The IDBac workflow was run via GNPS2
+# https://gnps2.org/workflowinput?workflowname=idbac_analysis_workflow
+# and the Query-Query matrix downloaded
+get_idbac_matrix <- function(method){
+  idbac_two_column_matrix <- c(
+    IDBacPresence = "data/idbac_presence_distance.tsv",
+    IDBacCosine = "data/idbac_cosine_distance.tsv"
+  )[method]
+  
+  idbac <- readr::read_tsv(idbac_two_column_matrix, show_col_types = FALSE)
+  idbac_m <- idbac |> 
+    dplyr::mutate(
+      dplyr::across(dplyr::starts_with("query"),
+                    ~ stringr::str_remove(.x, ".mzML") |> stringr::str_replace_all("-","_"))
+    ) |> 
+    tidyr::pivot_wider(
+      id_cols = query_filename_left,
+      names_from = query_filename_right,
+      values_from = distance
+    )  |> 
+    tibble::column_to_rownames("query_filename_left") |>
+    as.matrix()
+  return(1 - idbac_m)
+}
+
+format_idbac_results <- function(cluster_df){
+  reference_df <- cluster_df |> dplyr::group_by(membership) |> 
+    dplyr::arrange(dplyr::desc(name)) |> 
+    dplyr::slice_head( n = 1) |> 
+    dplyr::mutate(is_reference = TRUE)
+  
+  idbac_results <- cluster_df |> 
+    dplyr::left_join(
+      reference_df, 
+      by = dplyr::join_by(name, membership, cluster_size)
+    ) |> 
+    tidyr::replace_na(replace = list("is_reference" = FALSE)) |> 
+    maldipickr::pick_spectra()
+}
+
 read_clean_isolate_table <- function(isolate_table_file) {
   readr::read_csv(
     isolate_table_file,
@@ -76,6 +116,8 @@ merge_and_clean_results <- function(all_results, isolate_table) {
           "maldipickr_92",
           "SPeDE_20",
           "SPeDE_50",
+          "IDBacCosine_65",
+          "IDBacPresence_65",
           "Biotyper"
         ),
         ordered = T
@@ -84,7 +126,9 @@ merge_and_clean_results <- function(all_results, isolate_table) {
           "maldipickr (loose)" = "maldipickr_79",
           "maldipickr (strict)" = "maldipickr_92",
           "SPeDE (loose)" = "SPeDE_20",
-          "SPeDE (strict)" = "SPeDE_50"
+          "SPeDE (strict)" = "SPeDE_50",
+          "IDBac (cosine)" = "IDBacCosine_65",
+          "IDBac (default)" = "IDBacPresence_65" 
         ) |>
         forcats::fct_rev()
     )
