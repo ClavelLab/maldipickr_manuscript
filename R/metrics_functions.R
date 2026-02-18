@@ -23,3 +23,10 @@ write_clustering_results <- function(all_results_clean, path) {
     write_excel_csv(path)
   return(path)
 }
+
+write_clustering_results_asare <- function(all_results_clean, path) {
+  all_results_clean |>
+    arrange(desc(procedure), desc(to_pick), strain) |>
+    write_excel_csv(path)
+  return(path)
+}

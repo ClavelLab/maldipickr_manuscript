@@ -351,5 +351,16 @@ list(
       clustering_metrics_asare,
       here::here("TableS4_clustering_metrics_Asare.csv")
     )
+  ),
+  tar_file(
+    clustering_results_tableS5,
+    write_clustering_results_asare(
+      all_asare_clean,
+      here::here("TableS5_clustering_results_Asare.csv")
+    )
+  ),
+  tar_target(
+    summary_asare,
+    summary_dataset_asare(clostritof_tax_all_Asare)
   )
 )
