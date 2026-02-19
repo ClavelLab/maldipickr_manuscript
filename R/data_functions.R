@@ -116,8 +116,8 @@ merge_and_clean_results <- function(all_results, isolate_table) {
           "maldipickr_92",
           "SPeDE_20",
           "SPeDE_50",
-          "IDBacCosine_65",
-          "IDBacPresence_65",
+          "IDBacCosine_30",
+          "IDBacPresence_30",
           "Biotyper"
         ),
         ordered = T
@@ -127,8 +127,8 @@ merge_and_clean_results <- function(all_results, isolate_table) {
           "maldipickr (strict)" = "maldipickr_92",
           "SPeDE (loose)" = "SPeDE_20",
           "SPeDE (strict)" = "SPeDE_50",
-          "IDBac (cosine)" = "IDBacCosine_65",
-          "IDBac (default)" = "IDBacPresence_65" 
+          "IDBac (cosine)" = "IDBacCosine_30",
+          "IDBac (presence)" = "IDBacPresence_30" 
         ) |>
         forcats::fct_rev()
     )

@@ -103,13 +103,13 @@ targets_biotyper <- tar_map(
 #
 targets_idbac <- tar_map(
   unlist = FALSE,
-  tibble(method = c("IDBacPresence", "IDBacCosine"), threshold = 65),
+  tibble(method = c("IDBacPresence", "IDBacCosine"), threshold = 30),
   tar_target(
     sim_interpolated, get_idbac_matrix(method)
   ),
   tar_target(
     df_interpolated,
-    delineate_with_similarity(sim_interpolated, threshold = threshold * 0.01)
+    delineate_with_similarity(sim_interpolated, threshold = threshold * 0.01, method = "average")
   ),
   tar_target(
     picked, 
