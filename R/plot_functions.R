@@ -52,7 +52,7 @@ plot_dereplication_approaches <- function(all_results_clean) {
     ggh4x::facet_manual(vars(procedure), design = design) +
     ggplot2::labs(
       x = "Clusters per mock species",
-      y = "Species in the mock community",
+      y = "Species",
       fill = "Replicates per cluster"
     ) +
     ggplot2::theme(
