@@ -106,3 +106,31 @@ plot_linkage_min_similarity <- function(linkage_df){
     facet_wrap(~procedure, nrow = 2)+
     theme(legend.position = "bottom")
 }
+
+plot_dendrogram <- function(sim_matrix, all_results, path){
+  hc<-hclust(as.dist(1-sim_matrix), method = "complete")
+  dend <- as.dendrogram(hc)
+  
+  spectra2species <- all_results |>
+    dplyr::filter(procedure =="maldipickr (loose)") |>
+    dplyr::select(name,species, strain_identifier) |>
+    dplyr::distinct() |> dplyr::select(name, species) |> tibble::deframe()
+  
+  
+  new_labs <- paste(
+    spectra2species[labels(dend)], 
+    labels(dend)
+  )
+  
+  jpeg(filename = path, width = 7, height = 10, units = "in", res = 350)
+  par(mar=c(3,1,1,18))
+  dend |> 
+    set("labels", new_labs) |> 
+    set("labels_cex", 0.7) |>  
+    plot(horiz = T)
+  abline(v = 1- c(0.79,0.92), lty = c("dashed", "solid"),col = "grey40")
+  text(x = 1- c(0.79,0.92), y = 80, labels = c("0.79", "0.92"),
+       pos = 2,offset = 0.2)
+  dev.off()
+  return(path)
+}

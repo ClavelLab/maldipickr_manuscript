@@ -6,7 +6,7 @@ here::here("_targets.R")
 
 # Set target options:
 tar_option_set(
-  packages = c("maldipickr", "tidyverse", "coop", "cowplot","ggokabeito"),
+  packages = c("maldipickr", "tidyverse", "coop", "cowplot","ggokabeito", "dendextend"),
   # packages that your targets need to run
   format = "qs", # default storage format
 )
@@ -331,6 +331,10 @@ list(
     plot_dereplication_file,
     write_plot(plot_dereplication, here::here("Figure1.eps"))
   ),
+  tar_file(
+    dendrogram_file,
+    plot_dendrogram(sim_interpolated, all_results_clean, here::here("FigureS2.jpg"))
+  ),
   targets_asare_data,
   targets_asare,
   tar_combine(
@@ -394,6 +398,6 @@ list(
   ),
   tar_file(
     plot_linkage_file,
-    write_plot(plot_linkage, here::here("FigureS2.eps"), 9,6)
+    write_plot(plot_linkage, here::here("FigureS3.eps"), 9,6)
   )
 )
