@@ -70,13 +70,13 @@ plot_dereplication_approaches <- function(all_results_clean) {
   return(p)
 }
 
-write_plot <- function(plot_results, path, height = 10, width = 9) {
+write_plot <- function(plot_results, path, height = 10, width = 9, device = "eps") {
   ggplot2::ggsave(
     path,
     plot_results,
     height = height,
     width = width,
-    device = "eps",
+    device = device,
     dpi = 350
   )
   return(path)

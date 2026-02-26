@@ -398,6 +398,6 @@ list(
   ),
   tar_file(
     plot_linkage_file,
-    write_plot(plot_linkage, here::here("FigureS3.eps"), 9,6)
+    write_plot(plot_linkage, here::here("FigureS3.jpg"), 9,6, "jpeg")
   )
 )
