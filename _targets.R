@@ -307,7 +307,14 @@ list(
   ),
   tar_target(
     clustering_metrics,
-    get_clustering_metrics(all_results_clean, "strain_identifier")
+    get_clustering_metrics(all_results_clean, "strain_identifier") |>
+      dplyr::left_join(
+        get_clustering_metrics(
+          dplyr::filter(all_results_clean, !species %in% c("Gemmiger formicilis",
+                                                           "Lachnospira rogosae sp. nov.")),
+          "strain_identifier") |>
+          dplyr::rename_with(~ paste0(.x, "_only_in_db", recycle0 = TRUE), !procedure)
+        )
   ),
   tar_file(
     metrics_results_tableS2,
