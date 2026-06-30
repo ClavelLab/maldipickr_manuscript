@@ -1,9 +1,16 @@
 # workflow for maldipickr manuscript
 
-This repository contains the code for the comparison of dereplication approaches as part of the manuscript describing the [R package maldipickr](https://clavellab.github.io/maldipickr/) ([CRAN](https://doi.org/10.32614/CRAN.package.maldipickr)) using data at [zenodo.org/10.5281/zenodo.15744631](https://doi.org/10.5281/zenodo.15744631).
+This repository contains the code for the comparison of dereplication approaches as part of the manuscript Pauvert et al. (2026) describing the [R package maldipickr](https://clavellab.github.io/maldipickr/) ([CRAN](https://doi.org/10.32614/CRAN.package.maldipickr)) using data at [zenodo.org/10.5281/zenodo.15744631](https://doi.org/10.5281/zenodo.15744631).  
+
+
+> Charlie Pauvert, David Wylensek, Selina Nüchtern, Thomas Clavel, maldipickr dereplicates microbial MALDI-TOF spectra to facilitate multiplexed isolation, _Bioinformatics Advances_, 2026; vbag171, https://doi.org/10.1093/bioadv/vbag171
 
 
 ## Setup the environment for the workflow
+
+>[!NOTE]
+>A CodeOcean capsule ([10.24433/CO.1202249.v2](https://doi.org/10.24433/CO.1202249.v2)) displays a persistent snapshot of the current code and results
+
 
 These analyses were conducted in R 4.3.1 and Python 3.9.13 orchestrated from Rstudio. We recommend setting up R and specific versions using [`rig`](https://github.com/r-lib/rig#id-features), and getting Rstudio from [Posit](https://posit.co/download/rstudio-desktop/). We also use [`renv`](https://rstudio.github.io/renv) for reproducible environment, which can be installed in R with `install.packages("renv")` and [`uv`](https://docs.astral.sh/uv/) as a very fast Python package manager (as one of the tool in the benchmark uses Python).
 
